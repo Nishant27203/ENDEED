@@ -8,9 +8,11 @@ from typing import List, Dict
 import gradio as gr
 
 from recommend import (
-    get_all_movie_titles_by_industry,
+    check_endee_connection,
+    get_available_genres,
     get_available_industries,
-    get_recommendations,
+    get_dataset_summary,
+    get_recommendations_by_preferences,
 )
 
 
@@ -37,13 +39,10 @@ def _result_card(item: Dict[str, object]) -> str:
     """
 
 
-def recommend_movies(movie_name: str, industry: str, show_all: bool) -> str:
+def recommend_movies(industry: str, genre: str, show_all: bool) -> str:
     try:
-        response = get_recommendations(
-            movie_title=movie_name,
-            top_k=5,
-            industry_filter=industry,
-            show_all=show_all,
+        response = get_recommendations_by_preferences(
+            top_k=5, industry_filter=industry, genre_filter=genre, show_all=show_all
         )
     except Exception as exc:
         return (
@@ -65,13 +64,6 @@ def recommend_movies(movie_name: str, industry: str, show_all: bool) -> str:
     """
 
 
-def update_titles(industry: str):
-    titles = get_all_movie_titles_by_industry(industry)
-    if not titles:
-        return gr.Dropdown(choices=[], value=None)
-    return gr.Dropdown(choices=titles, value=titles[0])
-
-
 CUSTOM_CSS = """
 body, .gradio-container {
   background: #0f1117 !important;
@@ -86,14 +78,23 @@ body, .gradio-container {
 """
 
 
-with gr.Blocks(css=CUSTOM_CSS, theme=gr.themes.Soft(primary_hue="blue")) as demo:
+summary = get_dataset_summary()
+industry_list = ", ".join(summary["industries"])
+stats_text = f"Dataset: {summary['total_movies']} movies across {len(summary['industries'])} industries ({industry_list})."
+status = check_endee_connection()
+status_color = "#9be7a1" if status["status"] == "connected" else "#ffd166"
+
+with gr.Blocks() as demo:
     gr.Markdown("<div id='main-title'>AI Movie Recommendation System</div>")
-    gr.Markdown("Choose movie type (Hollywood, Bollywood, and more), then get top or all recommendations.")
+    gr.Markdown("Discover similar movies using AI semantic search with Endee vector database.")
+    gr.Markdown(f"<div style='color:{status_color}; font-weight:600;'>{html.escape(status['message'])}</div>")
+    gr.Markdown(f"<div style='color:#bfc7e6;'>{html.escape(stats_text)}</div>")
 
     with gr.Row():
         industry_choices = get_available_industries()
+        genre_choices = get_available_genres()
         default_industry = industry_choices[0]
-        initial_titles = get_all_movie_titles_by_industry(default_industry)
+        default_genre = genre_choices[0]
 
         industry_input = gr.Dropdown(
             choices=industry_choices,
@@ -101,27 +102,29 @@ with gr.Blocks(css=CUSTOM_CSS, theme=gr.themes.Soft(primary_hue="blue")) as demo
             label="Movie Type / Industry",
             scale=2,
         )
-        movie_input = gr.Dropdown(
-            choices=initial_titles,
-            value=initial_titles[0] if initial_titles else None,
-            label="Movie Name",
-            allow_custom_value=True,
-            scale=3,
+        genre_input = gr.Dropdown(
+            choices=genre_choices,
+            value=default_genre,
+            label="Genre / Section",
+            scale=2,
         )
         show_all_input = gr.Checkbox(label="Show all recommendations", value=False, scale=1)
         run_btn = gr.Button("Get Recommendations", scale=1, variant="primary")
 
     output_html = gr.HTML(label="Recommendations")
 
-    industry_input.change(fn=update_titles, inputs=[industry_input], outputs=[movie_input])
-
     run_btn.click(
         fn=recommend_movies,
-        inputs=[movie_input, industry_input, show_all_input],
+        inputs=[industry_input, genre_input, show_all_input],
         outputs=[output_html],
         show_progress="full",
     )
 
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860)
+    demo.launch(
+        server_name="0.0.0.0",
+        server_port=7860,
+        css=CUSTOM_CSS,
+        theme=gr.themes.Soft(primary_hue="blue"),
+    )

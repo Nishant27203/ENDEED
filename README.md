@@ -1,81 +1,67 @@
-# 🎬 AI Movie Recommendation System
+# AI Movie Recommendation System
 
-A beginner-friendly, end-to-end movie recommendation web app built with Python, Streamlit, Sentence Transformers, and **Endee vector database**.
+An AI-powered movie recommendation web app built as a practical data science project.
+It uses sentence embeddings for semantic understanding and Endee as the vector database for fast similarity search.
 
-## Project Overview
+## Why this project?
 
-This project recommends movies similar to a user-selected movie title by:
+Most basic recommendation demos rely on keyword matching. That works only when titles/descriptions share similar words.
+This project goes one step further by using semantic embeddings, so recommendations are based on meaning, not just exact text.
 
-1. Converting movie text (title + description) into dense vectors (embeddings)
-2. Storing those vectors in Endee
-3. Running vector similarity search to return the top matches
+## What this app does
 
-The app uses a clean dark UI and is suitable for a data science project/demo.
+- Loads a movie dataset with `title`, `description`, `industry`, and `genre`
+- Generates embeddings using `all-MiniLM-L6-v2`
+- Stores vectors + metadata in Endee
+- Recommends similar movies with vector search
+- Supports filters by industry/type (Hollywood, Bollywood, Tollywood, Korean, Anime, etc.)
+- Supports genre/sections (Horror, Animation, Action, Drama, Crime, Romance, etc.)
+- Supports top recommendations and "show all" mode
+- Provides a modern dark UI with cards, similarity score, and random movie picker
 
-## Problem Statement
+## How recommendation works (simple flow)
 
-Traditional keyword search misses semantic meaning. For example, two movies may be similar in theme even when they do not share exact words.  
-This project solves that by using embedding-based semantic similarity instead of plain text matching.
+1. Convert each movie into one text block:
+   - `title + description + industry + genre`
+2. Generate a 384-dim embedding for each movie
+3. Store in Endee index (`movies_index`) using cosine similarity
+4. User selects a movie and optional industry + genre filter
+5. Query Endee with the selected movie embedding
+6. Return the most similar movies (excluding the same movie)
 
-## How Recommendation Works
+## How Endee is used
 
-1. Load `data/movies.csv` with `title`, `description`, `industry`, and `genre`
-2. Build text as: `"{title}. {description} Industry: {industry}. Genre: {genre}."`
-3. Generate embeddings using `all-MiniLM-L6-v2` (384 dimensions)
-4. Create an Endee index (`movies_index`) with cosine similarity
-5. Upsert each movie vector with metadata (`title`, `description`, `industry`, `genre`) and filters
-6. On user query:
-   - Validate movie title exists in dataset
-   - Encode that movie text into a query vector
-   - Query Endee for top similar vectors
-   - Filter by selected industry/type (Hollywood, Bollywood, Tollywood, Korean, Anime, etc.)
-   - Exclude the same movie and show top 5 or all recommendations
+Endee is the core retrieval engine in this project.
 
-## Movie Types Added
+- Index creation: `client.create_index(...)`
+- Index access: `client.get_index(...)`
+- Upsert vectors: `index.upsert(...)`
+- Similarity search: `index.query(...)`
 
-The sample dataset now includes multiple movie industries/types:
-
-- Hollywood
-- Bollywood
-- Tollywood
-- Korean
-- Anime
-
-## How Endee Is Used as Vector Database
-
-Endee is used in the project for all vector operations:
-
-- Create index: `client.create_index(...)`
-- Get index: `client.get_index(...)`
-- Store vectors: `index.upsert([...])`
-- Similarity search: `index.query(vector=..., top_k=...)`
-
-This makes Endee the core retrieval engine of the recommendation system.
-
-## Project Structure
+## Project structure
 
 ```text
 .
-├── app.py                  # Streamlit UI
+├── gradio_app.py           # Main web UI (recommended)
+├── app.py                  # Streamlit UI (optional)
 ├── embeddings.py           # Embedding generation + Endee storage
-├── recommend.py            # Query + recommendation logic
+├── recommend.py            # Recommendation logic + helpers
 ├── data/
-│   └── movies.csv          # Sample movie dataset
-├── .streamlit/
-│   └── config.toml         # Dark theme settings
+│   └── movies.csv          # Dataset
+├── docker-compose.yml      # Local Endee server setup
 ├── requirements.txt
 └── README.md
 ```
 
-## Setup Instructions
+## Setup (quick start)
 
-### 1) Clone or open project
+### 1) Open project
 
 ```bash
-cd /path/to/project
+cd /path/to/ENDEED
 ```
 
-### 2) Create virtual environment (recommended)
+### 2) Create and activate venv
 
 ```bash
 python -m venv .venv
@@ -88,39 +74,50 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4) Start Endee locally
+### 4) Start Endee
 
-Follow the official Endee quick start:
-- [Endee Quick Start](https://docs.endee.io/quick-start)
+```bash
+docker compose up -d
+```
 
-By default, this project connects to local Endee (`localhost:8080`).
+You can check Endee dashboard at [http://localhost:8080](http://localhost:8080).
 
-Optional environment variables:
+## Run the app
 
-- `ENDEE_BASE_URL` (example: `http://0.0.0.0:8081/api/v1`)
-- `ENDEE_AUTH_TOKEN` (if auth is enabled)
-
-## How To Run the App
-
-### Option A (Recommended): Gradio UI (non-Streamlit)
+### Recommended UI (Gradio)
 
 ```bash
 python gradio_app.py
 ```
 
-Open:
-- `http://localhost:7860`
+Then open [http://localhost:7860](http://localhost:7860).
 
-### Option B: Streamlit UI
+### Optional UI (Streamlit)
 
 ```bash
 streamlit run app.py
 ```
 
-Open the local Streamlit URL shown in your terminal.
+## Environment variables (optional)
 
-## Notes
+- `ENDEE_BASE_URL` (default is local `http://127.0.0.1:8080/api/v1`)
+- `ENDEE_AUTH_TOKEN` (if Endee auth is enabled)
 
-- If a movie title is not found, the app shows a friendly warning.
-- The first run may take longer because the embedding model is downloaded.
-- Re-running keeps vectors up to date by upserting with stable IDs.
+## Troubleshooting
+
+- **"Endee server is not running"**  
+  Run: `docker compose up -d`
+
+- **No recommendations shown**  
+  Refresh app once and try a movie from the dropdown list.
+
+- **First request is slow**  
+  Normal on first run: model files are being loaded.
+
+## Notes for submission/demo
+
+This project is intentionally designed to be beginner-friendly but still industry-relevant:
+- modular Python files
+- semantic search with sentence transformers
+- real vector database integration (Endee)
+- polished UI and practical filters
