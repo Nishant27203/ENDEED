@@ -92,6 +92,34 @@ python gradio_app.py
 
 Then open [http://localhost:7860](http://localhost:7860).
 
+## Live deploy (share with anyone)
+
+If you want people to test your app without downloading code, this is the easiest setup:
+
+### Option 1: Deploy on Render (from GitHub)
+
+1. Push latest code to GitHub (already done).
+2. Go to [Render Dashboard](https://dashboard.render.com/) and create:
+   - **Web Service** (for this Python app)
+   - **Private Service** (for Endee database using Docker image: `endeeio/endee-server:latest`)
+3. Configure Web Service:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `python gradio_app.py`
+4. Set environment variable in Web Service:
+   - `ENDEE_BASE_URL` = internal URL of Endee service + `/api/v1`
+   - Example: `http://<your-endee-service-host>:8080/api/v1`
+5. Deploy both services.
+6. Share the Render web URL.
+
+### Option 2: Deploy app UI and connect Endee Cloud
+
+If you use Endee Cloud, set:
+- `ENDEE_BASE_URL` to your Endee Cloud API URL
+- `ENDEE_AUTH_TOKEN` (if required)
+
+Then deploy this repo on any Python host (Render, Railway, etc.) with start command:
+`python gradio_app.py`
+
 ### Optional UI (Streamlit)
 
 ```bash

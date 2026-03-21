@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import os
 from typing import List, Dict
 
 import gradio as gr
@@ -122,9 +123,10 @@ with gr.Blocks() as demo:
 
 
 if __name__ == "__main__":
+    port = int(os.getenv("PORT", "7860"))
     demo.launch(
         server_name="0.0.0.0",
-        server_port=7860,
+        server_port=port,
         css=CUSTOM_CSS,
         theme=gr.themes.Soft(primary_hue="blue"),
     )
