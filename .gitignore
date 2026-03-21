@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Local backups and runtime artifacts
+backups/
+
+# Streamlit local files
+.streamlit/secrets.toml
