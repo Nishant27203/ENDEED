@@ -172,13 +172,13 @@ Point **`ENDEE_BASE_URL`** (and **`ENDEE_AUTH_TOKEN`** if needed) at your cloud 
 
 ## Screenshots / Preview
 
-> **Placeholder** — Replace with a GIF, short screen recording, or static screenshots of the Gradio UI when you have them.
+Gradio web UI (dark theme): filters for industry and genre, optional “show all” mode, and recommendation cards with synopsis, metadata, and similarity scores.
 
-| Preview | What to show |
-|---------|----------------|
-| ![UI placeholder](https://via.placeholder.com/720x405/0f172a/38bdf8?text=Gradio+movie+recommender+UI) | Dark theme, movie cards, similarity scores, industry/genre filters |
+![AI Movie Recommendation System — Gradio UI](./docs/images/gradio-app-screenshot.png)
 
-**GIF / demo:** Add a file under `docs/` (e.g. `docs/demo.gif`) and reference it here: `![Demo](./docs/demo.gif)`.
+*Example: Drama genre with “Show all recommendations”; status line reminds you to run Endee on `http://127.0.0.1:8080` when working locally.*
+
+**Optional:** Add a short screen recording or GIF under `docs/` (e.g. `docs/demo.gif`) and link it here if you want an animated preview.
 
 ---
 
