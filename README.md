@@ -1,58 +1,80 @@
-# AI Movie Recommendation System
+<div align="center">
 
-**Pick a movie you like and discover others that feel similar—not just ones that happen to repeat the same words in the plot summary.**
+# 🎬 AI Movie Recommendation System
 
-This repo is a hands-on data science project: it turns movie text into embeddings, stores them in **Endee** (a vector database), and serves recommendations through a simple web UI. The goal is to show how “similar by meaning” differs from “similar by keywords,” in a stack that resembles what you’d see in real search and recommendation pipelines.
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=22&pause=1000&color=38BDF8&center=true&vCenter=true&width=600&lines=Semantic+search+for+movies;Embeddings+%2B+Endee+vector+database;Gradio+%26+Streamlit+UIs)](https://github.com/Nishant27203/ENDEED)
 
-## Project overview
+**Pick a film you love—get suggestions that match the *meaning*, not just overlapping keywords.**
 
-Choosing what to watch next is a fuzzy human problem. We rarely think in pure tags; we think in vibes—same tension, same humor, same kind of world. This app is a small working example of that idea in software: each film is encoded as a dense vector that captures semantic context from its title, description, industry, and genre. When you select a movie, the system asks the vector database for **nearest neighbors** in that space, so suggestions can align with narrative or thematic overlap even when the literal vocabulary differs.
+[![GitHub stars](https://img.shields.io/github/stars/Nishant27203/ENDEED?style=flat-square&logo=github)](https://github.com/Nishant27203/ENDEED/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Nishant27203/ENDEED?style=flat-square&logo=github)](https://github.com/Nishant27203/ENDEED/network/members)
+[![License](https://img.shields.io/github/license/Nishant27203/ENDEED?style=flat-square)](https://github.com/Nishant27203/ENDEED/blob/main/LICENSE)
+[![Status](https://img.shields.io/badge/status-active-success?style=flat-square)](https://github.com/Nishant27203/ENDEED)
+[![Python](https://img.shields.io/badge/python-3.x-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
-Who is this for? Anyone learning **embeddings**, **vector search**, and **retrieval** without drowning in framework noise—students, portfolio builders, or engineers who want a clear “data in → vectors → index → query → ranked results” story. The UI adds filters (e.g. Hollywood vs. Bollywood, Horror vs. Romance) so you can see how metadata and vector similarity work together in one place.
+</div>
 
-## Problem statement
+---
 
-Many tutorial recommenders still boil down to **shared words or tags**: if two descriptions don’t overlap much, the model assumes they’re unrelated. That breaks down quickly—synonyms, paraphrases, and “same mood, different wording” all get missed. Worse, users don’t experience recommendations as string overlap; they experience them as “this reminds me of that.”
+## 📌 About the Project
 
-This project addresses that gap by:
+This repo is a hands-on **data science** project: movie text is turned into **embeddings**, stored in **[Endee](https://docs.endee.io/)** (a vector database), and served through a web UI. It shows how *“similar by meaning”* differs from *“similar by keywords”*—the same pattern used in many real **search**, **“more like this”**, and **RAG** pipelines.
 
-- Representing each movie as a **single semantic embedding** (using `all-MiniLM-L6-v2`) built from structured text fields, not from a bag of isolated keywords.
-- Using **cosine similarity search in Endee** so “close in vector space” maps to “close in meaning” for practical top‑k results.
-- Keeping the pipeline **transparent**: you can trace from CSV → embedding script → index → query path, which makes it easier to debug, extend, or swap components later.
+Choosing what to watch is a fuzzy, human problem: we think in tone and theme, not raw tags. Here, each film becomes a dense vector from its `title`, `description`, `industry`, and `genre`. You pick a movie (and optional filters); the app queries Endee for **nearest neighbors** in that space—so overlaps in narrative or vibe can surface even when wording differs.
 
-In short: the problem is *shallow text similarity masquerading as taste*; the approach here is *meaning-aware retrieval backed by a real vector index*.
+**Problem many demos skip:** keyword-style matching fails on synonyms, paraphrases, and “same mood, different words.” This project uses a **single semantic embedding** per movie (`all-MiniLM-L6-v2`), **cosine similarity** in Endee for top‑k results, and a **traceable** path: CSV → embeddings → index → query.
 
-## What this app does
+**Who it’s for:** learners and builders who want a clear **data → vectors → index → ranked results** story—without unnecessary framework noise.
 
-- Loads a movie dataset with `title`, `description`, `industry`, and `genre`
-- Generates embeddings using `all-MiniLM-L6-v2`
-- Stores vectors + metadata in Endee
-- Recommends similar movies with vector search
-- Supports filters by industry/type (Hollywood, Bollywood, Tollywood, Korean, Anime, etc.)
-- Supports genre/sections (Horror, Animation, Action, Drama, Crime, Romance, etc.)
-- Supports top recommendations and "show all" mode
-- Provides a modern dark UI with cards, similarity score, and random movie picker
+---
 
-## How recommendation works (simple flow)
+## ✨ Features
 
-1. Convert each movie into one text block:
-   - `title + description + industry + genre`
-2. Generate a 384-dim embedding for each movie
-3. Store in Endee index (`movies_index`) using cosine similarity
-4. User selects a movie and optional industry + genre filter
-5. Query Endee with the selected movie embedding
-6. Return the most similar movies (excluding the same movie)
+- 🧠 **Semantic recommendations** — Similarity from embeddings, not just shared words in descriptions  
+- 🗄️ **Endee vector store** — Vectors + metadata with fast similarity search  
+- 🎯 **Filters** — Industry (e.g. Hollywood, Bollywood, Tollywood, Korean, Anime) and genre (e.g. Horror, Animation, Action)  
+- 📊 **Scores & modes** — Similarity scores, top picks, and “show all” style browsing  
+- 🎨 **Modern UI** — Dark-themed cards (Gradio); optional Streamlit UI  
+- 🎲 **Random picker** — Quick way to explore the catalog  
+- 🐳 **Local Endee** — `docker compose` for a reproducible stack  
 
-## How Endee is used
+---
 
-Endee is the core retrieval engine in this project.
+## 🛠 Tech Stack
 
-- Index creation: `client.create_index(...)`
-- Index access: `client.get_index(...)`
-- Upsert vectors: `index.upsert(...)`
-- Similarity search: `index.query(...)`
+| Layer | Tools |
+|--------|--------|
+| 🐍 **Language** | Python |
+| 🤖 **Embeddings** | [Sentence Transformers](https://www.sbert.net/) · `all-MiniLM-L6-v2` (384-dim) |
+| 🔢 **ML runtime** | PyTorch · `torch` / `torchvision` (see `requirements.txt`) |
+| 🗃️ **Vector DB** | [Endee](https://docs.endee.io/) — `create_index`, `upsert`, `query` |
+| 🖥️ **Web UI** | [Gradio](https://gradio.app/) (primary) · [Streamlit](https://streamlit.io/) (`app.py`, optional) |
+| 📁 **Data** | pandas · `data/movies.csv` |
+| 🐳 **Ops** | Docker Compose for local Endee |
 
-## Project structure
+---
+
+## 🧭 How Recommendation Works
+
+1. Build one text block per movie: `title + description + industry + genre`  
+2. Embed with `all-MiniLM-L6-v2` → **384-dimensional** vectors  
+3. Store in Endee index **`movies_index`** (cosine similarity)  
+4. User selects a movie and optional **industry** + **genre** filters  
+5. Query Endee with that movie’s embedding  
+6. Return the most similar titles (**excluding** the query movie)  
+
+### Endee in this project
+
+Endee is the retrieval engine:
+
+- Index: `client.create_index(...)`  
+- Access: `client.get_index(...)`  
+- Write: `index.upsert(...)`  
+- Search: `index.query(...)`  
+
+---
+
+## 📂 Project Structure
 
 ```text
 .
@@ -62,110 +84,174 @@ Endee is the core retrieval engine in this project.
 ├── recommend.py            # Recommendation logic + helpers
 ├── data/
 │   └── movies.csv          # Dataset
-├── docker-compose.yml      # Local Endee server setup
+├── docker-compose.yml      # Local Endee server
 ├── requirements.txt
 └── README.md
 ```
 
-## Setup (quick start)
+---
 
-### 1) Open project
+## ⚙️ Installation & Usage
+
+### Prerequisites
+
+- Python 3.x  
+- [Docker](https://www.docker.com/) (for local Endee)  
+
+### 1. Clone and enter the project
 
 ```bash
-cd /path/to/ENDEED
+git clone https://github.com/Nishant27203/ENDEED.git
+cd ENDEED
 ```
 
-### 2) Create and activate venv
+### 2. Virtual environment
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ```
 
-### 3) Install dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4) Start Endee
+### 4. Start Endee
 
 ```bash
 docker compose up -d
 ```
 
-You can check Endee dashboard at [http://localhost:8080](http://localhost:8080).
+Dashboard: [http://localhost:8080](http://localhost:8080)
 
-## Run the app
-
-### Recommended UI (Gradio)
+### 5. Run the app (Gradio — recommended)
 
 ```bash
 python gradio_app.py
 ```
 
-Then open [http://localhost:7860](http://localhost:7860).
+Open [http://localhost:7860](http://localhost:7860).
 
-## Live deploy (share with anyone)
+### Environment variables (optional)
 
-If you want people to test your app without downloading code, this is the easiest setup:
+| Variable | Purpose |
+|----------|---------|
+| `ENDEE_BASE_URL` | API base (default: `http://127.0.0.1:8080/api/v1`) |
+| `ENDEE_AUTH_TOKEN` | If your Endee instance requires auth |
 
-### Option 1: Deploy on Render (from GitHub)
+### Optional: Streamlit UI
 
-1. Push latest code to GitHub (already done).
-2. Go to [Render Dashboard](https://dashboard.render.com/) and create:
-   - **Web Service** (for this Python app)
-   - **Private Service** (for Endee database using Docker image: `endeeio/endee-server:latest`)
-3. Configure Web Service:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `python gradio_app.py`
-4. Set environment variable in Web Service:
-   - `ENDEE_BASE_URL` = internal URL of Endee service + `/api/v1`
-   - Example: `http://<your-endee-service-host>:8080/api/v1`
-5. Deploy both services.
-6. Share the Render web URL.
-
-### Option 2: Deploy app UI and connect Endee Cloud
-
-If you use Endee Cloud, set:
-- `ENDEE_BASE_URL` to your Endee Cloud API URL
-- `ENDEE_AUTH_TOKEN` (if required)
-
-Then deploy this repo on any Python host (Render, Railway, etc.) with start command:
-`python gradio_app.py`
-
-### Optional UI (Streamlit)
+Install Streamlit if you use `app.py`:
 
 ```bash
+pip install streamlit
 streamlit run app.py
 ```
 
-## Environment variables (optional)
+---
 
-- `ENDEE_BASE_URL` (default is local `http://127.0.0.1:8080/api/v1`)
-- `ENDEE_AUTH_TOKEN` (if Endee auth is enabled)
+## 🚀 Deployment
 
-## Troubleshooting
+Share the app without asking everyone to clone the repo.
 
-- **"Endee server is not running"**  
-  Run: `docker compose up -d`
+### Option A — Render (app + Endee)
 
-- **No recommendations shown**  
-  Refresh app once and try a movie from the dropdown list.
+1. Push this repo to GitHub.  
+2. In [Render](https://dashboard.render.com/): create a **Web Service** (this app) and a **Private Service** for Endee (`endeeio/endee-server:latest`).  
+3. Web service: **Build** `pip install -r requirements.txt` · **Start** `python gradio_app.py`  
+4. Set **`ENDEE_BASE_URL`** to your Endee service URL + `/api/v1` (e.g. `http://<endee-host>:8080/api/v1`).  
+5. Deploy and share the web URL.  
 
-- **First request is slow**  
-  Normal on first run: model files are being loaded.
+### Option B — Any host + Endee Cloud
 
-## Notes for submission/demo
+Point **`ENDEE_BASE_URL`** (and **`ENDEE_AUTH_TOKEN`** if needed) at your cloud Endee API, then deploy with start command `python gradio_app.py` (e.g. Render, Railway).
 
-This project is intentionally designed to be beginner-friendly but still industry-relevant:
-- modular Python files
-- semantic search with sentence transformers
-- real vector database integration (Endee)
-- polished UI and practical filters
+---
 
-## Conclusion
+## 📸 Screenshots / Preview
 
-This app is a compact slice of how modern discovery systems reason about **content similarity**: text becomes vectors, vectors live in a database built for **nearest-neighbor search**, and the UI turns that into something a person can actually use. It is not a full production recommender—there is no collaborative filtering from millions of user ratings, no A/B testing layer, and no live feedback loop—but it **does** show the embedding + vector retrieval pattern that sits underneath many search, “more like this,” and RAG-style products.
+> **Placeholder** — Replace with a GIF, short screen recording, or static screenshots of the Gradio UI when you have them.
 
-If you take one idea away, let it be this: **matching meaning is a different (and often better) game than matching strings.** From here, natural next steps include richer metadata, hybrid search (keywords *and* vectors), re-ranking with a second model, or wiring the same Endee index into another interface. The codebase is small on purpose so those experiments stay within reach.
+| Preview | What to show |
+|---------|----------------|
+| ![UI placeholder](https://via.placeholder.com/720x405/0f172a/38bdf8?text=Gradio+movie+recommender+UI) | Dark theme, movie cards, similarity scores, industry/genre filters |
+
+**GIF / demo:** Add a file under `docs/` (e.g. `docs/demo.gif`) and reference it here: `![Demo](./docs/demo.gif)`.
+
+---
+
+## 🔧 Troubleshooting
+
+| Issue | What to try |
+|--------|----------------|
+| “Endee server is not running” | `docker compose up -d` |
+| No recommendations | Refresh once; pick a movie from the dropdown |
+| First request is slow | Normal while the embedding model downloads/loads |
+
+---
+
+## 🎯 Notes (submission / demo)
+
+This project is intentionally **beginner-friendly** but **industry-shaped**:
+
+- Modular Python layout  
+- Semantic search with sentence transformers  
+- Real vector database integration (Endee)  
+- Polished UI with practical filters  
+
+---
+
+## 🏁 Conclusion
+
+This is a focused slice of **content-similarity** systems: text → vectors → **nearest-neighbor** search → UI. It is **not** a full production recommender (no collaborative filtering at scale, no A/B harness, no live feedback loop)—but it **does** show the embedding + retrieval pattern behind many modern discovery features.
+
+**Takeaway:** matching **meaning** is often more useful than matching **strings**. Next steps could include richer metadata, hybrid keyword + vector search, re-ranking, or reusing the same Endee index from another client.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository  
+2. Create a branch (`git checkout -b feature/your-idea`)  
+3. Commit your changes (`git commit -m 'Add concise description'`)  
+4. Push to the branch (`git push origin feature/your-idea`)  
+5. Open a Pull Request  
+
+Please keep changes focused and consistent with the existing code style.
+
+---
+
+## 📄 License
+
+This repository may not include a `LICENSE` file yet. [Add a license](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) (e.g. MIT) to clarify how others may use the code. Until then, all rights are reserved by default—check with the author if unsure.
+
+---
+
+## 👤 Author / Contact
+
+**Nishant** · [@Nishant27203](https://github.com/Nishant27203)
+
+[![GitHub](https://img.shields.io/badge/GitHub-Nishant27203-181717?style=flat-square&logo=github)](https://github.com/Nishant27203)
+
+<!-- Optional: add your LinkedIn profile URL -->
+<!-- [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/YOUR_USERNAME/) -->
+
+---
+
+## ⭐ Show Your Support
+
+If this project helped you learn about embeddings or vector search, consider **starring the repo** on GitHub—it helps others discover it and keeps motivation high for future updates.
+
+[![Star on GitHub](https://img.shields.io/github/stars/Nishant27203/ENDEED?style=social)](https://github.com/Nishant27203/ENDEED)
+
+---
+
+<div align="center">
+
+<sub>Built with semantic search, Endee, and a lot of ☕</sub>
+
+</div>
