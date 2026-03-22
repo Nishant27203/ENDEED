@@ -1,12 +1,26 @@
 # AI Movie Recommendation System
 
-An AI-powered movie recommendation web app built as a practical data science project.
-It uses sentence embeddings for semantic understanding and Endee as the vector database for fast similarity search.
+**Pick a movie you like and discover others that feel similar—not just ones that happen to repeat the same words in the plot summary.**
 
-## Why this project?
+This repo is a hands-on data science project: it turns movie text into embeddings, stores them in **Endee** (a vector database), and serves recommendations through a simple web UI. The goal is to show how “similar by meaning” differs from “similar by keywords,” in a stack that resembles what you’d see in real search and recommendation pipelines.
 
-Most basic recommendation demos rely on keyword matching. That works only when titles/descriptions share similar words.
-This project goes one step further by using semantic embeddings, so recommendations are based on meaning, not just exact text.
+## Project overview
+
+Choosing what to watch next is a fuzzy human problem. We rarely think in pure tags; we think in vibes—same tension, same humor, same kind of world. This app is a small working example of that idea in software: each film is encoded as a dense vector that captures semantic context from its title, description, industry, and genre. When you select a movie, the system asks the vector database for **nearest neighbors** in that space, so suggestions can align with narrative or thematic overlap even when the literal vocabulary differs.
+
+Who is this for? Anyone learning **embeddings**, **vector search**, and **retrieval** without drowning in framework noise—students, portfolio builders, or engineers who want a clear “data in → vectors → index → query → ranked results” story. The UI adds filters (e.g. Hollywood vs. Bollywood, Horror vs. Romance) so you can see how metadata and vector similarity work together in one place.
+
+## Problem statement
+
+Many tutorial recommenders still boil down to **shared words or tags**: if two descriptions don’t overlap much, the model assumes they’re unrelated. That breaks down quickly—synonyms, paraphrases, and “same mood, different wording” all get missed. Worse, users don’t experience recommendations as string overlap; they experience them as “this reminds me of that.”
+
+This project addresses that gap by:
+
+- Representing each movie as a **single semantic embedding** (using `all-MiniLM-L6-v2`) built from structured text fields, not from a bag of isolated keywords.
+- Using **cosine similarity search in Endee** so “close in vector space” maps to “close in meaning” for practical top‑k results.
+- Keeping the pipeline **transparent**: you can trace from CSV → embedding script → index → query path, which makes it easier to debug, extend, or swap components later.
+
+In short: the problem is *shallow text similarity masquerading as taste*; the approach here is *meaning-aware retrieval backed by a real vector index*.
 
 ## What this app does
 
