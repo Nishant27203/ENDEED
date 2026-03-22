@@ -163,3 +163,9 @@ This project is intentionally designed to be beginner-friendly but still industr
 - semantic search with sentence transformers
 - real vector database integration (Endee)
 - polished UI and practical filters
+
+## Conclusion
+
+This app is a compact slice of how modern discovery systems reason about **content similarity**: text becomes vectors, vectors live in a database built for **nearest-neighbor search**, and the UI turns that into something a person can actually use. It is not a full production recommender—there is no collaborative filtering from millions of user ratings, no A/B testing layer, and no live feedback loop—but it **does** show the embedding + vector retrieval pattern that sits underneath many search, “more like this,” and RAG-style products.
+
+If you take one idea away, let it be this: **matching meaning is a different (and often better) game than matching strings.** From here, natural next steps include richer metadata, hybrid search (keywords *and* vectors), re-ranking with a second model, or wiring the same Endee index into another interface. The codebase is small on purpose so those experiments stay within reach.
