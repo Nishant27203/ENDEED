@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎬 AI Movie Recommendation System
+# AI Movie Recommendation System
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=22&pause=1000&color=38BDF8&center=true&vCenter=true&width=600&lines=Semantic+search+for+movies;Embeddings+%2B+Endee+vector+database;Gradio+%26+Streamlit+UIs)](https://github.com/Nishant27203/ENDEED)
 
@@ -16,7 +16,7 @@
 
 ---
 
-## 📌 About the Project
+## About the Project
 
 This repo is a hands-on **data science** project: movie text is turned into **embeddings**, stored in **[Endee](https://docs.endee.io/)** (a vector database), and served through a web UI. It shows how *“similar by meaning”* differs from *“similar by keywords”*—the same pattern used in many real **search**, **“more like this”**, and **RAG** pipelines.
 
@@ -28,33 +28,33 @@ Choosing what to watch is a fuzzy, human problem: we think in tone and theme, no
 
 ---
 
-## ✨ Features
+## Features
 
-- 🧠 **Semantic recommendations** — Similarity from embeddings, not just shared words in descriptions  
-- 🗄️ **Endee vector store** — Vectors + metadata with fast similarity search  
-- 🎯 **Filters** — Industry (e.g. Hollywood, Bollywood, Tollywood, Korean, Anime) and genre (e.g. Horror, Animation, Action)  
-- 📊 **Scores & modes** — Similarity scores, top picks, and “show all” style browsing  
-- 🎨 **Modern UI** — Dark-themed cards (Gradio); optional Streamlit UI  
-- 🎲 **Random picker** — Quick way to explore the catalog  
-- 🐳 **Local Endee** — `docker compose` for a reproducible stack  
+- **Semantic recommendations** — Similarity from embeddings, not just shared words in descriptions  
+- **Endee vector store** — Vectors + metadata with fast similarity search  
+- **Filters** — Industry (e.g. Hollywood, Bollywood, Tollywood, Korean, Anime) and genre (e.g. Horror, Animation, Action)  
+- **Scores & modes** — Similarity scores, top picks, and “show all” style browsing  
+- **Modern UI** — Dark-themed cards (Gradio); optional Streamlit UI  
+- **Random picker** — Quick way to explore the catalog  
+- **Local Endee** — `docker compose` for a reproducible stack  
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer | Tools |
 |--------|--------|
-| 🐍 **Language** | Python |
-| 🤖 **Embeddings** | [Sentence Transformers](https://www.sbert.net/) · `all-MiniLM-L6-v2` (384-dim) |
-| 🔢 **ML runtime** | PyTorch · `torch` / `torchvision` (see `requirements.txt`) |
-| 🗃️ **Vector DB** | [Endee](https://docs.endee.io/) — `create_index`, `upsert`, `query` |
-| 🖥️ **Web UI** | [Gradio](https://gradio.app/) (primary) · [Streamlit](https://streamlit.io/) (`app.py`, optional) |
-| 📁 **Data** | pandas · `data/movies.csv` |
-| 🐳 **Ops** | Docker Compose for local Endee |
+| **Language** | Python |
+| **Embeddings** | [Sentence Transformers](https://www.sbert.net/) · `all-MiniLM-L6-v2` (384-dim) |
+| **ML runtime** | PyTorch · `torch` / `torchvision` (see `requirements.txt`) |
+| **Vector DB** | [Endee](https://docs.endee.io/) — `create_index`, `upsert`, `query` |
+| **Web UI** | [Gradio](https://gradio.app/) (primary) · [Streamlit](https://streamlit.io/) (`app.py`, optional) |
+| **Data** | pandas · `data/movies.csv` |
+| **Ops** | Docker Compose for local Endee |
 
 ---
 
-## 🧭 How Recommendation Works
+## How Recommendation Works
 
 1. Build one text block per movie: `title + description + industry + genre`  
 2. Embed with `all-MiniLM-L6-v2` → **384-dimensional** vectors  
@@ -74,7 +74,7 @@ Endee is the retrieval engine:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 .
@@ -91,7 +91,7 @@ Endee is the retrieval engine:
 
 ---
 
-## ⚙️ Installation & Usage
+## Installation & Usage
 
 ### Prerequisites
 
@@ -152,7 +152,7 @@ streamlit run app.py
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 Share the app without asking everyone to clone the repo.
 
@@ -170,7 +170,7 @@ Point **`ENDEE_BASE_URL`** (and **`ENDEE_AUTH_TOKEN`** if needed) at your cloud 
 
 ---
 
-## 📸 Screenshots / Preview
+## Screenshots / Preview
 
 > **Placeholder** — Replace with a GIF, short screen recording, or static screenshots of the Gradio UI when you have them.
 
@@ -182,7 +182,7 @@ Point **`ENDEE_BASE_URL`** (and **`ENDEE_AUTH_TOKEN`** if needed) at your cloud 
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 | Issue | What to try |
 |--------|----------------|
@@ -192,7 +192,7 @@ Point **`ENDEE_BASE_URL`** (and **`ENDEE_AUTH_TOKEN`** if needed) at your cloud 
 
 ---
 
-## 🎯 Notes (submission / demo)
+## Notes (submission / demo)
 
 This project is intentionally **beginner-friendly** but **industry-shaped**:
 
@@ -203,7 +203,7 @@ This project is intentionally **beginner-friendly** but **industry-shaped**:
 
 ---
 
-## 🏁 Conclusion
+## Conclusion
 
 This is a focused slice of **content-similarity** systems: text → vectors → **nearest-neighbor** search → UI. It is **not** a full production recommender (no collaborative filtering at scale, no A/B harness, no live feedback loop)—but it **does** show the embedding + retrieval pattern behind many modern discovery features.
 
@@ -211,7 +211,7 @@ This is a focused slice of **content-similarity** systems: text → vectors → 
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome.
 
@@ -225,13 +225,13 @@ Please keep changes focused and consistent with the existing code style.
 
 ---
 
-## 📄 License
+## License
 
 This repository may not include a `LICENSE` file yet. [Add a license](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository) (e.g. MIT) to clarify how others may use the code. Until then, all rights are reserved by default—check with the author if unsure.
 
 ---
 
-## 👤 Author / Contact
+## Author / Contact
 
 **Nishant** · [@Nishant27203](https://github.com/Nishant27203)
 
@@ -242,7 +242,7 @@ This repository may not include a `LICENSE` file yet. [Add a license](https://do
 
 ---
 
-## ⭐ Show Your Support
+## Show Your Support
 
 If this project helped you learn about embeddings or vector search, consider **starring the repo** on GitHub—it helps others discover it and keeps motivation high for future updates.
 
@@ -252,6 +252,6 @@ If this project helped you learn about embeddings or vector search, consider **s
 
 <div align="center">
 
-<sub>Built with semantic search, Endee, and a lot of ☕</sub>
+<sub>Built with semantic search, Endee, and curiosity.</sub>
 
 </div>
